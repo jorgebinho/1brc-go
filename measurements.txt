@@ -1,0 +1,6 @@
+Porto Alegre;5.6
+São Borja;2
+Santo Ângelo;4
+Cerro Largo;7
+São Borja;5
+Porto Alegre;5
