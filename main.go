@@ -33,12 +33,21 @@ func main() {
 
 		temp, _ := strconv.ParseFloat(rawTemp, 64)
 
-		measurement := dados[location]
-		measurement.Min = min(measurement.Min, temp)
-		measurement.Max = max(measurement.Max, temp)
-		measurement.Sum += temp
-		measurement.Count++
+		measurement, ok := dados[location]
 
+		if !ok {
+			measurement = Measurement{
+				Min:   temp,
+				Max:   temp,
+				Sum:   temp,
+				Count: 1,
+			}
+		} else {
+			measurement.Min = min(measurement.Min, temp)
+			measurement.Max = max(measurement.Max, temp)
+			measurement.Sum += temp
+			measurement.Count++
+		}
 		dados[location] = measurement
 	}
 
