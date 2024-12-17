@@ -2,13 +2,12 @@ package main
 
 import (
 	"bufio"
-	"fmt"
 	"os"
+	"strconv"
 	"strings"
 )
 
 type Measurement struct {
-	Nome  string
 	Min   float64
 	Max   float64
 	Sum   float64
@@ -22,12 +21,23 @@ func main() {
 	}
 	defer measurements.Close()
 
+	dados := make(map[string]Measurement)
+
 	scanner := bufio.NewScanner(measurements)
 	for scanner.Scan() {
 		rawData := scanner.Text()
 		semicolon := strings.Index(rawData, ";")
 		location := rawData[:semicolon]
-		temp := rawData[semicolon+1:]
-		fmt.Println(location, temp)
+		rawTemp := rawData[semicolon+1:]
+
+		temp, _ := strconv.ParseFloat(rawTemp, 64)
+
+		measurement := dados[location]
+		measurement.Min = min(measurement.Min, temp)
+		measurement.Max = max(measurement.Max, temp)
+		measurement.Sum += temp
+		measurement.Count++
+
+		dados[location] = measurement
 	}
 }
