@@ -2,6 +2,7 @@ package main
 
 import (
 	"bufio"
+	"fmt"
 	"os"
 	"strconv"
 	"strings"
@@ -39,5 +40,9 @@ func main() {
 		measurement.Count++
 
 		dados[location] = measurement
+	}
+
+	for name, measurement := range dados {
+		fmt.Printf("%s: %#+v\n", name, measurement)
 	}
 }
