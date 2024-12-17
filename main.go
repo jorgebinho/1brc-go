@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+	"sort"
 	"strconv"
 	"strings"
 )
@@ -51,7 +52,23 @@ func main() {
 		dados[location] = measurement
 	}
 
-	for name, measurement := range dados {
-		fmt.Printf("%s: %#+v\n", name, measurement)
+	locations := make([]string, 0, len(dados))
+	for name := range dados {
+		locations = append(locations, name)
 	}
+
+	sort.Strings(locations)
+
+	fmt.Printf("{")
+	for _, name := range locations {
+		measurements := dados[name]
+		fmt.Printf(
+			"%s=%.1f/%.1f/%.1f, ",
+			name,
+			measurements.Min,
+			measurements.Sum/float64(measurements.Count),
+			measurements.Max,
+		)
+	}
+	fmt.Printf("}\n")
 }
